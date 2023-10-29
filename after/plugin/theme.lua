@@ -32,7 +32,7 @@ require("catppuccin").setup({
     color_overrides = {},
     custom_highlights = {},
     integrations = {
-        mason = true,
+        mason = false,
         harpoon = true,
         cmp = true,
         gitsigns = true,

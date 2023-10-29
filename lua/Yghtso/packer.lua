@@ -30,6 +30,30 @@ return require('packer').startup(function(use)
     use { "ThePrimeagen/refactoring.nvim" }
     use("mbbill/undotree")
 
+    use({
+        "hrsh7th/nvim-cmp",
+        wants = { "LuaSnip" },
+        requires = {
+            {
+                "L3MON4D3/LuaSnip",
+                event = "BufReadPre",
+                wants = "friendly-snippets",
+                config = require("doom.modules.config.doom-luasnip"),
+                requires = {
+                    "rafamadriz/friendly-snippets",
+                    "luasnip_snippets.nvim",
+                },
+            },
+            {
+                "windwp/nvim-autopairs",
+                config = require("doom.modules.config.doom-autopairs"),
+                event = "BufReadPre",
+            },
+        },
+        config = require("doom.modules.config.doom-cmp"),
+        event = "InsertEnter",
+    })
+
     use("tpope/vim-fugitive")
 
     use 'christoomey/vim-tmux-navigator'

@@ -7,7 +7,17 @@ lsp_zero.set_sign_icons({
     info = '»',
 })
 
+
+
 lsp_zero.setup_servers({ 'lua_ls', 'rust_analyzer', 'clangd', 'html', 'tsserver' })
+
+lsp_zero.setup_servers {
+    setting = {
+        Lua = {
+            diagnostics = { globals = { 'vim' }, }
+        }
+    }
+}
 
 lsp_zero.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr }
@@ -24,6 +34,7 @@ lsp_zero.on_attach(function(client, bufnr)
     vim.keymap.set('n', '<space>wl', function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, opts)
+    --
     vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)

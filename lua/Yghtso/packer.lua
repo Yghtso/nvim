@@ -30,38 +30,13 @@ return require('packer').startup(function(use)
     use { "ThePrimeagen/refactoring.nvim" }
     use("mbbill/undotree")
 
-    use({
-        "hrsh7th/nvim-cmp",
-        wants = { "LuaSnip" },
-        requires = {
-            {
-                "L3MON4D3/LuaSnip",
-                event = "BufReadPre",
-                wants = "friendly-snippets",
-                config = require("doom.modules.config.doom-luasnip"),
-                requires = {
-                    "rafamadriz/friendly-snippets",
-                    "luasnip_snippets.nvim",
-                },
-            },
-            {
-                "windwp/nvim-autopairs",
-                config = require("doom.modules.config.doom-autopairs"),
-                event = "BufReadPre",
-            },
-        },
-        config = require("doom.modules.config.doom-cmp"),
-        event = "InsertEnter",
-    })
-
     use("tpope/vim-fugitive")
 
     use 'christoomey/vim-tmux-navigator'
 
     use("folke/zen-mode.nvim")
 
-    use { 'neovim/nvim-lspconfig' }
-    --
+    use { 'hrsh7th/nvim-cmp' }
     use { 'hrsh7th/cmp-buffer' }
     use { 'hrsh7th/cmp-path' }
     use { 'hrsh7th/cmp-cmdline' }
@@ -75,6 +50,7 @@ return require('packer').startup(function(use)
     use "mfussenegger/nvim-dap"
     use "rcarriga/nvim-dap-ui"
 
+    use "rafamadriz/friendly-snippets"
 
     use {
         'VonHeikemen/lsp-zero.nvim',
@@ -85,7 +61,10 @@ return require('packer').startup(function(use)
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },
             { 'hrsh7th/cmp-nvim-lsp' },
-            { 'L3MON4D3/LuaSnip' },
+            {
+                'L3MON4D3/LuaSnip',
+                dependencies = { "rafamadriz/friendly-snippets" },
+            },
         }
     }
 

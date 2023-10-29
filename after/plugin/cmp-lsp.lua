@@ -1,22 +1,59 @@
 local cmp = require('cmp')
 local cmp_action = require('lsp-zero').cmp_action()
 local lspkind = require('lspkind')
-lspkind.init()
+lspkind.init({
+    mode = 'symbol_text',
+    preset = 'codicons',
+    symbol_map = {
+        Text = "󰉿",
+        Method = "󰆧",
+        Function = "󰊕",
+        Constructor = "",
+        Field = "󰜢",
+        Variable = "󰀫",
+        Class = "󰠱",
+        Interface = "",
+        Module = "",
+        Property = "󰜢",
+        Unit = "󰑭",
+        Value = "󰎠",
+        Enum = "",
+        Keyword = "󰌋",
+        Snippet = "",
+        Color = "󰏘",
+        File = "󰈙",
+        Reference = "󰈇",
+        Folder = "󰉋",
+        EnumMember = "",
+        Constant = "󰏿",
+        Struct = "󰙅",
+        Event = "",
+        Operator = "󰆕",
+        TypeParameter = "",
+    },
+    maxwidth = 50,
+    ellipsis_char = '...',
+})
+
+require("luasnip.loaders.from_vscode").lazy_load()
 
 cmp.setup({
+
     formatting = {
 
-        -- here is where the change happens
-        format = function(entry, vim_item)
-            vim_item.kind = lspkind.presets.default[vim_item.kind]
-            vim_item.menu = ({
-                nvim_lsp = "[LSP]",
-                look = "[Dict]",
-                buffer = "[Buffer]",
-            })[entry.source.name]
-            vim_item.kind, vim_item.menu = vim_item.menu, vim_item.kind
-            return vim_item
-        end
+        fields = { 'abbr', 'kind', 'abbr' },
+        format = lspkind.cmp_format({
+            function(entry, vim_item)
+                vim_item.menu = ({
+                    nvim_lsp = 'λ',
+                    luasnip = '⋗',
+                    buffer = 'Ω',
+                    path = '~',
+                    nvim_lua = 'Π', })[entry.source.name]
+                vim_item.kind = lspkind.presets.default[vim_item.kind]
+                return vim_item
+            end
+        })
     },
 
     preselect = 'item',
@@ -24,7 +61,6 @@ cmp.setup({
         completeopt = 'menu,menuone,noinsert'
     },
     snippet = {
-        -- REQUIRED - you must specify a snippet engine
         expand = function(args)
             require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
         end,
@@ -42,6 +78,7 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
+        { name = 'luasnip' },
         { name = 'buffer' },
         { name = 'nvim_lua' },
         {
@@ -61,18 +98,19 @@ cmp.setup.filetype('gitcommit', {
         { name = 'buffer' },
     })
 })
-mapping = cmp.mapping.preset.insert({
-    -- `Enter` key to confirm completion
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = 'buffer' }
+    }
+})
 
-    -- Ctrl+Space to trigger completion menu
-    ['<C-Space>'] = cmp.mapping.complete(),
-
-    -- Navigate between snippet placeholder
-    ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-    ['<C-b>'] = cmp_action.luasnip_jump_backward(),
-
-    -- Scroll up and down in the completion documentation
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        { name = 'cmdline' }
+    })
 })

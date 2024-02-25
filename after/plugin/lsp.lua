@@ -7,16 +7,17 @@ lsp_zero.set_sign_icons({
     info = '»',
 })
 
-
-
-lsp_zero.setup_servers({ 'lua_ls', 'rust_analyzer', 'clangd', 'html', 'tsserver' })
+require('lspconfig').jdtls.setup({
+    single_file_support = true,
+    root_dir = vim.loop.cwd
+})
 
 lsp_zero.setup_servers {
     setting = {
-        Lua = {
+        lua = {
             diagnostics = { globals = { 'vim' }, }
-        }
-    }
+        },
+    },
 }
 
 lsp_zero.on_attach(function(client, bufnr)
@@ -55,10 +56,9 @@ lsp_zero.set_server_config({
                 dynamicRegistration = false,
                 lineFoldingOnly = true
             }
-        }
-    }
+        },
+    },
 })
-
 
 lsp_zero.format_on_save({
     format_opts = {
@@ -70,6 +70,8 @@ lsp_zero.format_on_save({
         ['tsserver'] = { 'javascript', 'typescript' },
         ['html'] = { 'html' },
         ['clangd'] = { 'c', 'c++' },
+        ['jdtls'] = { 'java' },
+        ['asm_lsp'] = { 'asm' },
     }
 })
 

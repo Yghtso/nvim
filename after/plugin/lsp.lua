@@ -8,8 +8,7 @@ lsp_zero.set_sign_icons({
 })
 
 require('lspconfig').jdtls.setup({
-    single_file_support = true,
-    root_dir = vim.loop.cwd
+    single_file_supporttrue = false,
 })
 
 lsp_zero.setup_servers {

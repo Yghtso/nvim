@@ -11,7 +11,7 @@ require("mason").setup({
 })
 
 require('mason-lspconfig').setup({
-    ensure_installed = { 'html', "tsserver", "lua_ls", "rust_analyzer", "clangd", "jdtls", "asm_lsp", "zls" },
+    ensure_installed = { 'html', "ts_ls", "lua_ls", "rust_analyzer", "clangd", "jdtls", "asm_lsp", "zls" },
     handlers = {
         lsp_zero.default_setup,
     },
